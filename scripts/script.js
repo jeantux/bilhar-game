@@ -97,6 +97,7 @@ function draw() {
     stickVisible()
     background(200)
     mainTable.display()
+
     if (gameOver === false) {
         stick.display()
         loadActionsBalls(currentBalls)                                 
@@ -114,12 +115,15 @@ function draw() {
 
 
 function mouseClicked() {
-    if (showStick === true) {
+    if (showStick === true && gameOver === false) {
         currentBalls[0].strong.x = -stick.strong.x
         currentBalls[0].strong.y = -stick.strong.y
         showStick = false
-    } else if (gameOver === true){
+    } 
+
+    if (gameOver === true){
         showStick = true
+        points = 0
         gameOver = false
         setup()
     }

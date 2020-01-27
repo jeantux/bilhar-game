@@ -3,6 +3,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
     this.y = y
     this.color = color
     this.ballNumber = ballNumber
+    this.mainBall = mainBall
     this.diametter = mainBall === true ? 25 : 23
     this.killed = false
     this.strong = {
@@ -65,6 +66,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
     }
 
     this.display = () => {
+        
         if (this.killed === false) {
             noStroke()
             fill(this.color.r, this.color.g, this.color.b)
@@ -74,12 +76,9 @@ function Ball(x, y, color, ballNumber, mainBall) {
                 fill(255)
                 text(this.ballNumber, this.x -8, this.y+6)
             }
-        }
-
-        
-        if (this.mainBall === true && this.killed === true) {
-            gameOver = true
-            points = 0
+        } else if (this.mainBall === true) {
+            gameOver = true   
+            this.moving = false         
         }
     }
 
