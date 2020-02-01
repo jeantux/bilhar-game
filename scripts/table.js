@@ -4,14 +4,16 @@ function Table(x, y, height, width) {
     this.width = width
     this.height = height
     this.roles = []
+    this.PositionRole = {
+        top: 80,
+        middle: 310,
+        down: 550,
+        left: 80,
+        right: 400
+    }
 
     this.displayRole = (x, y, diametter) => {
-        let shadow
-        if (x <= 90)
-            shadow = -2
-        else    
-            shadow = 2
-
+        let shadow = (x <= 90) ? -2 : 2
         fill(60, 100, 100)
         circle(x + shadow, y, diametter+1) 
         fill(60, 160, 100)
@@ -25,12 +27,12 @@ function Table(x, y, height, width) {
     }
 
     this.createRoles = () => {
-        this.roles.push({x: 80, y: 80, diametter: 25})// top, left 
-        this.roles.push({x: 80, y: 310, diametter: 25})// middle, left
-        this.roles.push({x: 80, y: 550, diametter: 25})// down, left
-        this.roles.push({x: 400, y: 80, diametter: 25})// top, right
-        this.roles.push({x: 400, y: 310, diametter: 25})// middle, right
-        this.roles.push({x: 400, y: 550, diametter: 25})// down, right
+        this.roles.push({x: this.PositionRole.left,  y: this.PositionRole.top,    diametter: 25})
+        this.roles.push({x: this.PositionRole.left,  y: this.PositionRole.middle, diametter: 25})
+        this.roles.push({x: this.PositionRole.left,  y: this.PositionRole.down,   diametter: 25})
+        this.roles.push({x: this.PositionRole.right, y: this.PositionRole.top,    diametter: 25})
+        this.roles.push({x: this.PositionRole.right, y: this.PositionRole.middle, diametter: 25})
+        this.roles.push({x: this.PositionRole.right, y: this.PositionRole.down,   diametter: 25})
     }
     
     this.createObjects = () => {
@@ -60,4 +62,6 @@ function Table(x, y, height, width) {
             
             this.displayRoles()
     }   
+
+    this.createObjects()
 }
