@@ -1,5 +1,14 @@
+var whiteBall
+var stick
+var ball1, ball2, ball3, ball4, ball5, ball6, ball7, ball8, 
+    ball9, ball10, ball11, ball12, ball13, ball14, ball5
+
 var currentBalls = []
-var mainTable, stick, state, score
+
+var showStick = true
+var gameOver = false
+
+var points = 0
 
 function rgb(r, g, b) {
     return { r: r, g: g, b: b }
@@ -7,11 +16,14 @@ function rgb(r, g, b) {
 
 function setup() {
     createCanvas(640, 640)
+    createTable()
     createBalls()
+    createStick()
+}
+
+function createTable() {
     mainTable = new Table(80, 80, 550, 320)
-    stick = new Stick(300, 300)
-    state = new State()
-    score = new Score()
+    mainTable.createObjects()
 }
 
 function createBalls() {
@@ -59,6 +71,10 @@ function loadActionsBall(ball, others) {
     ball.pocketed(mainTable.roles)
 }
 
+function createStick() {
+    stick = new Stick(300, 300)
+}
+
 function stickVisible() {
     let showBall = true
     for (let i = 0; i < currentBalls.length; i++) {
@@ -68,17 +84,13 @@ function stickVisible() {
         }
     }
 
-    state.setShowStick(showBall)
+    showStick = showBall
 }
 
-function displayGameOver() {
+function updatePoints() {
     fill(0)
-    textSize(24)
-    text('Game Over', 190, 250)
-    text('Score: ' + score.getScore(), 210, 300)
-
-    textSize(12);
-    text('click to restart', 215, width /3)
+    textSize(14);
+    text('Score: ' + points, width -70, 20)
 }
 
 function draw() {
@@ -86,26 +98,33 @@ function draw() {
     background(200)
     mainTable.display()
 
-    if (!state.getGameOver()) {
-        score.display()
+    if (gameOver === false) {
         stick.display()
-        loadActionsBalls(currentBalls)
-        stick.update(currentBalls[0].x, currentBalls[0].y)
+        loadActionsBalls(currentBalls)                                 
+        stick.update(currentBalls[0].x, currentBalls[0].y, showStick)
+        updatePoints()
     } else {
-        displayGameOver()
+        fill(0)
+        textSize(24)
+        text('Game Over', 190, 250)
+
+        textSize(12);
+        text('press Key to restart', 200, width /3)
     }
 }
 
+
 function mouseClicked() {
-    if (state.getShowStick() && !state.getGameOver()) {
-        currentBalls[0].putt(stick.strong)        
-        state.setShowStick(false)
+    if (showStick === true && gameOver === false) {
+        currentBalls[0].strong.x = -stick.strong.x
+        currentBalls[0].strong.y = -stick.strong.y
+        showStick = false
     } 
 
-    if (state.getGameOver()){
-        state.setShowStick(true)
-        score.clear()
-        state.setGameOver(false)
+    if (gameOver === true){
+        showStick = true
+        points = 0
+        gameOver = false
         setup()
     }
 }
