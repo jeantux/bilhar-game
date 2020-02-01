@@ -10,9 +10,14 @@ function Ball(x, y, color, ballNumber, mainBall) {
         x: 0,
         y: 0
     }
-    this.precaution = .006
+    this.precaution = .013
     this.moving = true
     this.mass = (4 * (3.14) / 3) * Math.pow((this.diametter / 2), 3)
+
+    this.putt = (strong) => {
+        this.strong.x = -strong.x
+        this.strong.y = -strong.y
+    }
 
     this.pocketed = (roles) => {
         for (let i = 0; i < roles.length; i++) {
@@ -20,12 +25,11 @@ function Ball(x, y, color, ballNumber, mainBall) {
 
             if (d < ((this.diametter / 2) + (roles[i].diametter / 2))) {
                 if(this.killed === false) {
-                    points = points + this.ballNumber
+                    score.add(this.ballNumber)
                 }
                 this.killed = true
                 if (this.mainBall === true) {
-                    gameOver = true
-                    points = 0
+                    state.setGameOver(true)
                 }
             }
         }
@@ -77,7 +81,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
                 text(this.ballNumber, this.x -8, this.y+6)
             }
         } else if (this.mainBall === true) {
-            gameOver = true   
+            state.setGameOver(true)
             this.moving = false         
         }
     }
@@ -107,7 +111,6 @@ function Ball(x, y, color, ballNumber, mainBall) {
         }
     }
 
-    //distancea euclidiana
     this.distance = (x1, y1, x2, y2) => {
         let pow = Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
 
