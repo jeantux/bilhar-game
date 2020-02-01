@@ -2,19 +2,21 @@ function State () {
     this.gameOver = false
     this.showStick = true
 
-    this.setGameOver = (stateGame) => {
-        this.gameOver = stateGame
-    }
-
-    this.getGameOver = () => {
-        return this.gameOver
-    }
-
-    this.setShowStick = (stateStick) => {
-        this.showStick = stateStick
-    }
-
-    this.getShowStick = () => {
-        return this.showStick
+    return {
+        setGameOver: (stateGame) => {
+            this.gameOver = stateGame
+        },
+    
+        getGameOver: () => {
+            return this.gameOver
+        },
+    
+        setShowStick: (stateStick) => {
+            this.showStick = stateStick
+        },
+    
+        getShowStick: () => {
+            return this.showStick
+        }
     }
 }
