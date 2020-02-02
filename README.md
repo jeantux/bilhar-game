@@ -7,6 +7,8 @@ team work.
 
 There is a series of [videos](https://youtu.be/Gj2ear1FzRE) that are being developed explaining in detail the implementation of this application.
 
+![Game bilhar](https://github.com/jeaanca/bilhar-game/blob/master/game.gif)
+
 [Know my channel](https://www.youtube.com/channel/UCjSFU-9JUt2ATyjomcsRgSQ)
 
 And of course, not to mention that our game is animal, I particularly lost some time playing.
