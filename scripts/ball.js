@@ -1,42 +1,62 @@
-function Ball(x, y, color, ballNumber, mainBall) {
-    this.x = x
-    this.y = y
-    this.color = color
-    this.ballNumber = ballNumber
-    this.mainBall = mainBall
-    this.diametter = mainBall === true ? 25 : 23
-    this.killed = false
-    this.strong = {
-        x: 0,
-        y: 0
+class Ball {
+    constructor(x, y, color, ballNumber, mainBall) {
+        this.x = x
+        this.y = y
+        this.color = color
+        this.ballNumber = ballNumber
+        this.mainBall = mainBall
+        this.diametter = mainBall === true ? 25 : 23
+        this.killed = false
+        this.strong = {x: 0, y: 0}
+        this.precaution = .013
+        this.moving = true
+        this.mass = (4 * (3.14) / 3) * Math.pow((this.diametter / 2), 3)
     }
-    this.precaution = .013
-    this.moving = true
-    this.mass = (4 * (3.14) / 3) * Math.pow((this.diametter / 2), 3)
-
-    this.putt = (strong) => {
+    
+    putt (strong) {
         this.strong.x = -strong.x
         this.strong.y = -strong.y
     }
 
-    this.pocketed = (roles) => {
+    get startX() {
+        return this.x - this.radius/2;
+    }
+
+    get startY() {
+        return this.y - this.radius/2;
+    }
+
+    get endX() {
+        return this.x + this.radius/2;
+    }
+
+    get endY() {
+        return this.y + this.radius/2;
+    }
+
+    pocketed(roles) {
         for (let i = 0; i < roles.length; i++) {
             let d = this.distance(this.x, this.y, roles[i].x, roles[i].y)
 
-            if (d < ((this.diametter / 2) + (roles[i].diametter / 2))) {
-                if(this.killed === false) {
-                    score.add(this.ballNumber)
-                }
-                this.killed = true
-                if (this.mainBall === true) {
-                    state.setGameOver(true)
-                }
+            if (d > ((this.diametter / 2) + (roles[i].diametter / 2))) {
+                continue;
             }
+
+            if(this.killed === false) {
+                score.add(this.ballNumber)
+            }
+            
+            this.killed = true;
+
+            if (this.mainBall === true) {
+                state.setGameOver(true)
+            }
+            
         }
     }
 
-    this.strengthPrecaution = () => {
-        if(this.strong.x != 0) {
+    strengthPrecaution () {
+        if(this.strong.x !== 0) {
             if (this.strong.x > 0) {
                 if (this.strong.x <= .01) {
                     this.strong.x = 0
@@ -52,7 +72,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
             }
         }
 
-        if(this.strong.y != 0) {
+        if(this.strong.y !== 0) {
             if (this.strong.y > 0) {
                 if (this.strong.y <= .01) {
                     this.strong.y = 0
@@ -69,25 +89,26 @@ function Ball(x, y, color, ballNumber, mainBall) {
         }
     }
 
-    this.display = () => {
-        
-        if (this.killed === false) {
+    display () {
+        if (!this.killed) {
             noStroke()
             fill(this.color.r, this.color.g, this.color.b)
             circle(this.x, this.y, this.diametter)
     
             if (this.strong.y === 0 && this.strong.x === 0) {
                 fill(255)
-                text(this.ballNumber, this.x -8, this.y+6)
+                text(this.ballNumber, this.x - 8, this.y + 6)
             }
-        } else if (this.mainBall === true) {
+        }
+        
+        if (this.mainBall) {
             state.setGameOver(true)
             this.moving = false         
         }
     }
 
-    this.move = () => {
-        if(this.moving === true) {
+    move() {
+        if(this.moving) {
             this.x += this.strong.x
             this.y += this.strong.y
         }
@@ -95,30 +116,27 @@ function Ball(x, y, color, ballNumber, mainBall) {
         this.strengthPrecaution()
     }
 
-    this.colisionTable = (table) => {
-        if((this.x - (this.diametter /2)) < table.x) {
-            this.strong.x = (this.strong.x * -1)
-        } 
-        else if ((this.x + (this.diametter / 2) ) > (table.x + table.width)){
-            this.strong.x = (this.strong.x * -1)
-        }
+    colisionTable(table) {
+        const xIsOutOfBounds = this.startX < table.x ||
+        this.endX > table.x + table.width;
 
-        if((this.y - (this.diametter /2)) < table.y) {
+        const yIsOutOfBounds = this.startY < table.y ||
+        this.endY > table.y + table.height;
+
+        if(xIsOutOfBounds) {
+            this.strong.x *= -1;
+        } 
+        
+        if(yIsOutOfBounds) {
             this.strong.y = (this.strong.y * -1)
         } 
-        else if ((this.y + (this.diametter / 2) ) > (table.height)){
-            this.strong.y = (this.strong.y * -1)
-        }
     }
 
-    this.distance = (x1, y1, x2, y2) => {
-        let pow = Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
-
-        pow = pow < 0 ? (pow * (-1)) : pow      
-        return Math.sqrt( pow )
+    distance(x1, y1, x2, y2) {
+        return Math.hypot(x2 - x1, y2 - y1);
     }
     
-    this.colisionBalls = (othersBalls) => {
+    colisionBalls(othersBalls) {
         for (let i = 0; i < othersBalls.length; i++) {
             if (othersBalls[i].killed === false && this.killed === false) {
                 let d = this.distance(this.x, this.y, othersBalls[i].x, othersBalls[i].y)
@@ -128,9 +146,9 @@ function Ball(x, y, color, ballNumber, mainBall) {
         }
     }
 
-    this.setPosition = (otherBall) => {
+    setPosition(otherBall) {
         let xPos = this.x - otherBall.x
-        xPos = xPos < 0 ? xPos * -1 : xPos
+        xPos = xPos < 0 ? -xPos  : xPos
 
         let yPos = this.y - otherBall.y
         yPos = yPos < 0 ? yPos * -1 : yPos
@@ -150,7 +168,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
         }
     }
 
-    function rotate(velocity, angle) {
+    rotate(velocity, angle) {
         const rotatedVelocities = {
             x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
             y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
@@ -159,7 +177,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
         return rotatedVelocities;
     }
 
-    this.colisionBall = (otherParticle) => {
+    colisionBall(otherParticle) {
         const xVelocityDiff = this.strong.x - otherParticle.strong.x;
         const yVelocityDiff = this.strong.y - otherParticle.strong.y;
     
