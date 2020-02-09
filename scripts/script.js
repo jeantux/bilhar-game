@@ -2,7 +2,7 @@ var currentBalls = []
 var mainTable, stick, state, score
 
 function rgb(r, g, b) {
-    return { r: r, g: g, b: b }
+    return { r, g, b }
 }
 
 function setup() {

@@ -22,8 +22,9 @@ function Ball(x, y, color, ballNumber, mainBall) {
     this.pocketed = (roles) => {
         for (let i = 0; i < roles.length; i++) {
             let d = this.distance(this.x, this.y, roles[i].x, roles[i].y)
+            let positionPocketed = [2, 4].indexOf(i) ? roles[i].diametter / 4 : 0
 
-            if (d < ((this.diametter / 2) + (roles[i].diametter / 2))) {
+            if (d < ((this.diametter / 2) + (positionPocketed))) {
                 if(this.killed === false) {
                     score.add(this.ballNumber)
                 }

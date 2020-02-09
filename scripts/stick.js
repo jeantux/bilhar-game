@@ -34,17 +34,22 @@ function Stick(x, y) {
 
     this.display = () => {
         if (this.show == true) {
-            let r = 180
-            let angle = map(mouseX, 0, width, 50, 75)
-            let dx = r * cos(angle)
-            let dy = r * sin(angle)
-            
-            this.strong.x = dx / 360 * this.strongCollision
-            this.strong.y = dy / 360 * this.strongCollision
-
             stroke(100, 50, 42)
             strokeWeight(6)
-            line(this.x, this.y, this.x + dx, this.y+ dy)
+            
+            let size = 180
+
+            let posX = mouseX - this.x
+            let posY = mouseY - this.y
+
+            let angle = Math.atan2(posY, posX) + Math.PI
+            let dx = size * cos(angle) 
+            let dy = size * sin(angle) 
+
+            line(this.x + (dx/9), this.y + (dy / 9), this.x + dx, this.y+ dy)
+
+            this.strong.x = dx / 360 * this.strongCollision
+            this.strong.y = dy / 360 * this.strongCollision
 
             // strong bar
             fill(120)
