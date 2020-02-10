@@ -113,9 +113,7 @@ function Ball(x, y, color, ballNumber, mainBall) {
     }
 
     this.distance = (x1, y1, x2, y2) => {
-        let pow = Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
-
-        pow = pow < 0 ? (pow * (-1)) : pow      
+        let pow = Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)   
         return Math.sqrt( pow )
     }
     
