@@ -5,7 +5,6 @@ It is inevitable to create this game without understanding fantastic concepts, s
 abstracting a layer it is possible to understand mathematical calculations in a fun way and going a little deeper, understand a little about
 team work.
 
-There is a series of [videos](https://youtu.be/Gj2ear1FzRE) that are being developed explaining in detail the implementation of this application.
 
 ![Game bilhar](https://github.com/jeaanca/bilhar-game/blob/master/game.gif)
 
